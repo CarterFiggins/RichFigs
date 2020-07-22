@@ -13,7 +13,7 @@ export default class Month extends React.Component {
             <div>
               Month name
             </div>
-            You are at the Month
+            You are at the Month View
         </div>
     );
   }

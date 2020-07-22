@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: MyString
+  category_id: 1
+  income: 1
+  planned: 1
+  expense: 1
+  pay_id: 1
+
+two:
+  date: MyString
+  category_id: 1
+  income: 1
+  planned: 1
+  expense: 1
+  pay_id: 1
