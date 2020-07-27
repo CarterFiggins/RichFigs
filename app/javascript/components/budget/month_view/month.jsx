@@ -1,21 +1,27 @@
 import React from 'react';
 
-export default class Month extends React.Component {
-  render() {
-    return(
-        <div>
-            <div>
-              MENU
-            </div>
-            <div>
-              Name Of Budget
-            </div>
-            <div>
-              Month name
-            </div>
-            You are at the Month View
-        </div>
-    );
-  }
+import MonthInfo from './month_info';
+import Category from './month_info';
+import Menu from './menu';
+
+export default function Month() {
+  return(
+    <div>
+      <div>
+        <Menu />
+      </div>
+      <div className="test">
+        (Name Of Budget)
+      </div>
+      <div>
+        <MonthInfo />
+      </div>
+      <div>
+        <Category />
+      </div>
+      You are at the Month View
+    </div>
+  );
+  
   
 }

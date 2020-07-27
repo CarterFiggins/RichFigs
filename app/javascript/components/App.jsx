@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import Month from './budget/month_view/month';
 import Login from './login';
 
+import '../styles/styles';
+
 class App extends React.Component {
   render() {
     return(
