@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MonthInfo from './month_info';
-import Category from './month_info';
+import Category from './category';
 import Menu from './menu';
 
 export default function Month() {
@@ -10,16 +10,18 @@ export default function Month() {
       <div>
         <Menu />
       </div>
-      <div className="test">
-        (Name Of Budget)
+      <div className="large-text account-name">
+        Fig Budget
       </div>
       <div>
         <MonthInfo />
       </div>
+      <div className="category-title">
+        Categories
+      </div>
       <div>
         <Category />
       </div>
-      You are at the Month View
     </div>
   );
   

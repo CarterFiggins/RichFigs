@@ -1,4 +1,65 @@
 
-.test{
-  font-size: 10rem;
+.large-text {
+  font-size: 3rem;
+}
+
+.menu-right {
+  font-size: 1.3rem;
+  float: right;
+  margin-top: 1rem;
+  margin-right: 1rem;
+}
+
+.account-name {
+  padding: 1rem;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.month-info {
+  font-size: 2rem;
+  padding: 2rem;
+}
+.main-month-name{
+  font-size: 3rem;
+  padding: 1rem;
+}
+
+.goto-month-name {
+  padding: 1rem;
+
+}
+
+.category-box {
+  border: .1rem solid black;
+  margin: 0 2rem 5rem 2rem;
+  padding: 1rem;
+}
+
+.category-title {
+  text-align: center;
+  margin: 1rem;
+  font-size: 2rem;
+}
+
+.add-expense {
+  margin: 5rem;
+  padding: 1rem;
+}
+
+.view-expenses {
+  margin: 5rem;
+  padding: 1rem;
+}
+
+.space {
+  padding: 1rem;
+}
+
+.category-info {
+  font-size: 2rem;
+  margin: 1rem;
 }
