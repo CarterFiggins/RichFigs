@@ -5,6 +5,7 @@ import Login from './login';
 
 import '../styles/styles';
 
+// TODO: Add regester route, settings, 
 class App extends React.Component {
   render() {
     return(
