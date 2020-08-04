@@ -14,17 +14,15 @@ ActiveRecord::Schema.define(version: 2020_07_22_050349) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
-    t.integer "user_id"
-    t.integer "month_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.integer "planned"
-    t.integer "expense"
-    t.string "spent_id"
+    t.float "planned"
+    t.float "expense"
+    t.integer "month_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -39,32 +37,33 @@ ActiveRecord::Schema.define(version: 2020_07_22_050349) do
 
   create_table "months", force: :cascade do |t|
     t.string "date"
-    t.integer "category_id"
-    t.integer "income"
-    t.integer "planned"
-    t.integer "expense"
-    t.integer "pay_id"
+    t.integer "account_id"
+    t.float "income"
+    t.float "planned"
+    t.float "expense"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "pays", force: :cascade do |t|
     t.string "name"
-    t.integer "ammount"
+    t.integer "month_id"
+    t.float "ammount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "spents", force: :cascade do |t|
     t.string "name"
-    t.integer "amount"
+    t.float "amount"
+    t.integer "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "transactions", force: :cascade do |t|
     t.string "name"
-    t.integer "amount"
+    t.float "amount"
     t.string "type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -74,6 +73,7 @@ ActiveRecord::Schema.define(version: 2020_07_22_050349) do
     t.string "user_name"
     t.string "password"
     t.string "color"
+    t.integer "account_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
