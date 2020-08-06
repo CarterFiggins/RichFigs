@@ -1,4 +1,4 @@
 class Account < ApplicationRecord
-    has_meny: user
-    has_meny: month
+  has_many :users
+  has_many :years
 end

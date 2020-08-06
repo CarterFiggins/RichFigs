@@ -1,4 +1,4 @@
 class Category < ApplicationRecord
-    has_meny: month
-    has_meny: spent 
+    has_many :month
+    has_many :spent 
 end

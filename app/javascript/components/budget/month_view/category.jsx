@@ -1,4 +1,9 @@
 import React from 'react';
+import { gql } from '@apollo/client';
+
+// const GET_CATEGORIES = gql`
+
+// `;
 
 export default function Category() {
   return(

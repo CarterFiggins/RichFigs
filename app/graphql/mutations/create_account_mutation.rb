@@ -3,8 +3,8 @@ class Mutations::CreateAccountMutation < Mutations::BaseMutation
   description: "Creates An Account"
   argument: name
 
-  def resolve()
-  
+  def resolve(name)
+    Account.create(name: name)
   end
 
 end

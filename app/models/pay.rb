@@ -1,3 +1,3 @@
 class Pay < ApplicationRecord
-    belongs_to: month
+    belongs_to :month
 end

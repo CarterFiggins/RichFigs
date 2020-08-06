@@ -1,5 +1,5 @@
 class Month < ApplicationRecord
-    belongs_to: account
-    has_meny: category
-    has_meny: pay
+    belongs_to :year
+    has_many :category
+    has_many :pay
 end
