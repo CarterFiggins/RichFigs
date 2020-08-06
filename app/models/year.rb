@@ -1,4 +1,4 @@
 class Year < ApplicationRecord
-  has_many :month
+  has_many :months
   belongs_to :account
 end
