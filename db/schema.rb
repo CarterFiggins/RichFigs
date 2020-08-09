@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 2020_08_06_040802) do
 
   create_table "months", force: :cascade do |t|
     t.string "date"
-    t.integer "account_id"
     t.integer "year_id"
     t.float "income"
     t.float "planned"

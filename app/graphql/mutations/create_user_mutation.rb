@@ -1,6 +1,6 @@
 class Mutations::CreateUserMutation < Mutations::BaseMutation
   null true
-  description: "Creates An Account"
+  description: "Creates A User"
   argument: user_name
   argument: password
   argument: color

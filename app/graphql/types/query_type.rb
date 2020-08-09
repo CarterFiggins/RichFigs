@@ -9,5 +9,13 @@ module Types
     def test_field
       "Hello World!"
     end
+
+    field :get_users, Type::User, null: false do
+      description: "gets all Users"
+    end
+
+    def get_users
+      User.all
+    end
   end
 end

@@ -2,11 +2,13 @@ class Mutations::CreateSpentMutation < Mutations::BaseMutation
   null true
   description: "Creates a Spent"
   argument: name
-  argument: month_id
+  argument: category_id
   argument: user_id
+  argument: repeat_id
   argument: amount
+  argument: date
 
-  def resolve(name, month_id, user_id, amount)
-    Spent.create(name: name, month_id: month_id, user_id: user_id, amount: amount)
+  def resolve(name, category_id, user_id, repeat_id, amount, date)
+    Spent.create(name: name, category_id: category_id, user_id: user_id, repeat_id: repeat_id, amount: amount, date: date)
   end
 end
