@@ -1,4 +1,4 @@
-class Types::Categories < Types::BaseObject
+class Types::CategoriesType < Types::BaseObject
   field :id, ID, null: false
   field :month_id, ID, null: false
   field :repeat_id, ID, null: true

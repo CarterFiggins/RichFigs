@@ -1,4 +1,4 @@
-class Types::Pay < Types::BaseObject
+class Types::PayType < Types::BaseObject
   field :id, ID, null: false
   field :name, String, null: false
   field :month_id, ID, null: false

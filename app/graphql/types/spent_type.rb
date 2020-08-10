@@ -1,4 +1,4 @@
-class Types::Spents < Types::BaseObject
+class Types::SpentType < Types::BaseObject
   field :id, ID, null: false
   field :user_id, ID, null: false
   field :category_id, ID, null: false

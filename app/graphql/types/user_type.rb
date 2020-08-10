@@ -1,4 +1,4 @@
-class Types::User < Types::BaseObject
+class Types::UserType < Types::BaseObject
   field :id, ID, null: false
   field :user_name, String, null: false
   field :password, String, null: false

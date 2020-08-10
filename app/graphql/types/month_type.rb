@@ -1,4 +1,4 @@
-class Types::Month < Types::BaseObject
+class Types::MonthType < Types::BaseObject
   field :id, ID, null: false
   field :date, String, null: false
   field :year_id, ID , null: false

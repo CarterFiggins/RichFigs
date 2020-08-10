@@ -1,4 +1,4 @@
-lass Types::Year < Types::BaseObject
+class Types::YearType < Types::BaseObject
   field :id, ID, null: false
   field :year_date, Int, null: false
   field :account_id, ID, null: false

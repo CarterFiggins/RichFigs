@@ -3,19 +3,24 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    field :users, [Type::UserType], null: false do
+      description "gets all Users"
     end
 
-    field :get_users, Type::User, null: false do
-      description: "gets all Users"
-    end
-
-    def get_users
+    
+    def users
       User.all
     end
+
+    field :year, Type::YearType, null: false do
+      description "get year"
+      argument :year_date, Int, required: false
+    end
+
+    def year(year_date)
+      puts "************************** Inside get YEAR ***********************************"
+      Year.find(year_date: year_date)
+    end
+
   end
 end
