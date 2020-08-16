@@ -1,28 +1,30 @@
 import React from 'react';
 
-export default function MonthInfo() {
+export default function MonthInfo(props) {
+  const { info } = props
+
   return(
     <div>
       <div className="center">
         <span className="goto-month-name">
-          June
+          Pev Month
         </span>
         <span className="large-text main-month-name">
-          July
+          {info.date}
         </span>
         <span className="goto-month-name">
-          Auguest
+          Next Month
         </span>
       </div>
       <div className="center">
         <span className="month-info">
-          Income: $0.00
+          Income: ${info.income}
         </span>
         <span className="month-info">
-          Planned: $0.00 
+          Planned: ${info.planned}
         </span>
         <span className="month-info">
-          Expenses: $0.00
+          Expenses: ${info.expense}
         </span>
       </div>
     </div>
