@@ -14,12 +14,14 @@ const client = new ApolloClient({
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  const appDiv = document.body.appendChild(document.createElement('div'))
+  appDiv.id = 'main-app'
   ReactDOM.render(
     <Router>
       <ApolloProvider client={client}>
           <Route path="/" component={App} />
       </ApolloProvider>
     </Router>,
-    document.body.appendChild(document.createElement('div')),
+    appDiv,
   )
 })

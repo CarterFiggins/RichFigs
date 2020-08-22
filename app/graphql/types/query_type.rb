@@ -47,11 +47,11 @@ module Types
       Pay.where(month_id: month_id)
     end
 
-    field :category, [Types::CategoriesType], null: false do
+    field :categories, [Types::CategoriesType], null: false do
       description "get category from month"
       argument :month_id, ID, required: true
     end
-    def category(month_id)
+    def categories(month_id)
       Category.where(month_id: month_id[:month_id])
     end
 

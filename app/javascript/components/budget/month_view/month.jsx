@@ -5,8 +5,7 @@ import Menu from './menu';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import CategoryList from './category_list';
-
-console.log("before gql")
+import CategoryPopup from '../common/category_popup'
 
 const GET_MONTH_INFO = gql`
   query MonthData($yearDate: Int, $date: String, $accountID: ID!) {
@@ -41,7 +40,9 @@ export default function Month() {
     accountID: 1,
   };
 
-  const { loading, error, data } = useQuery(GET_MONTH_INFO, { variables });
+  const { loading, error, data, refetch } = useQuery(GET_MONTH_INFO, { variables });
+
+  const [isOpen, setIsOpen] = useState(false);
 
   if (error){ 
     console.log(error)
@@ -51,7 +52,7 @@ export default function Month() {
     return <div> Loading </div>
   }
 
-  console.log(data.month.id)
+
 
   return(
     <div>
@@ -66,11 +67,18 @@ export default function Month() {
         <MonthInfo info={data.month} />
       </div>
       <div className="category-title">
-        Categories
+        Categories 
+        <button onClick={() => setIsOpen(true)}>
+          Add Category
+        </button>
       </div>
       <div>
-        <CategoryList monthID={data.month.id} />
+        <CategoryList monthId={data.month.id} monthDate={monthDate} refetchMonth={refetch} />
       </div>
+      <CategoryPopup 
+        isOpen={isOpen}
+        closeModal={() => setIsOpen(false)}
+      />
     </div>
   );
   

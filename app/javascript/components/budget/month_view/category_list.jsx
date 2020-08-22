@@ -7,39 +7,52 @@ import { useQuery } from '@apollo/react-hooks';
 
 const GET_CATEGORIES = gql`
   query CategoryList($monthId: ID!){
-    category(monthId: $monthId){
+    categories(monthId: $monthId){
       id
       name
       planned
       expense
+      isFixed
     }
   }
 `;
 
 export default function CategoryList(props) {
 
-  console.log("monthID")
-  console.log(props.monthID)
+  const { monthId, monthDate } = props
+
   const variables = {
-    monthId: props.monthID
+    monthId: monthId
   };
 
-  const { loading, error, data } = useQuery(GET_CATEGORIES, { variables });
+  const { loading, error, data, refetch} = useQuery(GET_CATEGORIES, { variables });
+
+  const refetchMonth = () => {
+    refetch()
+    props.refetchMonth()
+  }
 
   if (error){ 
     console.log(error)
     return <div> Bad things happened </div>;
   }
+
+
   if(loading){
     return <div> Loading </div>
   }
 
-  console.log(data)
-
-
   return(
-      _.map(data.category, (category)=> {
-        return <Category key={category.id} category={category} />
+      _.map(data.categories, (category)=> {
+        return (
+          <Category
+            key={category.id}
+            category={category}
+            monthId={monthId}
+            refetchMonth={refetchMonth}
+            monthDate={monthDate}
+          />
+        )
       })
   );
 

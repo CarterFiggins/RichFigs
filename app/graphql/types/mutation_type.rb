@@ -1,10 +1,13 @@
 module Types
   class MutationType < Types::BaseObject
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World"
+    
+    field :create_spent, mutation: Mutations::CreateSpent do
+      description "make a Spent"
+      argument :name, String, required: true
+      argument :amount, Float, required: true
+      argument :user_id, ID, required: true
+      argument :month_id, ID, required: true
+      argument :category_id, ID, required: true
     end
   end
 end

@@ -1,0 +1,91 @@
+@mixin center($position) {
+
+  @if $position == 'vertical' {
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  @else if $position == 'horizontal' {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translate(-50%);
+  }
+  @else if $position == 'both' {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  -ms-transition: $transition;
+  transition: $transition;
+}
+
+.modal{
+  position: absolute;
+  top: -90rem;
+  align-self: center;
+  @include center(horizontal);
+  background: #ffffff;
+  box-shadow: 0 0 1rem rgba(0,0,0,0.5);
+  @include transition(all 0.3s ease);
+  outline: none;
+  bottom: 1%;
+  top: 5rem;
+  width: 30rem;
+  height: 20rem;
+  padding: 1rem 2rem;
+}
+
+.popup-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.popup-title{
+  font-size: 3rem;
+  justify-content: center;
+  align-self: center;
+}
+
+.popup-close{
+  font-size: 2rem;
+  align-self: center;
+  cursor: pointer;
+}
+
+.popup-body{
+  margin: 0 2rem;
+  font-size: 1.5rem;
+  &div {
+    padding: 1rem;
+  }
+}
+
+
+.modal_background{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 900;
+
+}
+
+
+
+

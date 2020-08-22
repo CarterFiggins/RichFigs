@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { gql } from '@apollo/client';
 import { useQuery, useMutation} from '@apollo/react-hooks';
+import ExpensePopup from '../common/expense_popup';
 
 const GET_SPENTS = gql`
   query spentList($categoryId: ID!){
@@ -18,11 +19,11 @@ const GET_SPENTS = gql`
 `;
 
 const MAKE_SPENT = gql`
-  mutation makeSpent($name: String!, $amount: Float!, $userId: ID!) {
-    createSpent(name: $name, amount: $amount, userId: $userId){
-      id
-      name
-      amount
+  mutation makeSpent($name: String!, $amount: Float!, $userId: ID!, $monthId: ID!, $categoryId: ID!) {
+    createSpent(name: $name, amount: $amount, userId: $userId, monthId: $monthId, categoryId: $categoryId) {
+      spent {
+        id
+      }
     }
   }
 `;
@@ -30,33 +31,38 @@ const MAKE_SPENT = gql`
 
 export default function Category(props) {
 
-  const {category} = props;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { category, monthId, monthDate } = props;
 
   const variables = {
     categoryId: category.id
   };
 
-  const { loading, error, data } = useQuery(GET_SPENTS, { variables });
+  const { loading, error, data, refetch } = useQuery(GET_SPENTS, { variables });
   const [createSpent] = useMutation(MAKE_SPENT);
 
   if (error){ 
-    console.log(error)
+    console.log(error);
     return <div> Bad things happened </div>;
   }
   if(loading){
-    return <div> Loading </div>
+    return <div> Loading </div>;
   }
 
-  const addExpence = (name, amount, userId) => {
-    test = createSpent(name, amount, userId)
-    console.log(test)
+  const addExpense = async(name, amount, userId, monthId, categoryId ) => {
+    setIsOpen(true);
   }
 
-  console.log(data)
+  const refetchMonth = () => {
+    refetch();
+    props.refetchMonth();
+  }
+
   return(
     <div className="category-box">
       <span className="category-info">
-        {category.name} <button onClick={() => addExpence("spendings", 20, 1)}>Add expence</button>
+        {category.name} <button onClick={() => addExpense("spendings", 20, 1, monthId, category.id)}>Add expence</button>
       </span>
       <div className="center space">
         <span className="category-info">
@@ -83,6 +89,13 @@ export default function Category(props) {
           )
         })}
       </div>
+      <ExpensePopup
+        isOpen={isOpen}
+        closeModal={() => setIsOpen(false)}
+        refetchMonth={refetchMonth}
+        category={category}
+        monthDate={monthDate}
+      />
     </div>
   );
 
