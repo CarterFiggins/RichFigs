@@ -35,31 +35,136 @@
 
 .category-box {
   border: .1rem solid black;
-  margin: 0 2rem 5rem 2rem;
+  margin: 0 2rem 2rem 2rem;
   padding: 1rem;
 }
 
 .category-title {
   text-align: center;
+  justify-content: center;
   margin: 1rem;
   font-size: 2rem;
 }
 
-.add-expense {
-  margin: 5rem;
-  padding: 1rem;
+.category-name {
+  text-align: center;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.category-info {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.category-value {
+  font-size: 2rem;
+  text-align: center;
+  padding: 0 1rem 0 .5rem;
+}
+
+.icon-button-add {
+  font-size: 1.4rem;
+  align-self: center;
+  justify-content: center;
+  cursor: pointer;
+  color: green;
+}
+
+.icon-button-delete {
+  font-size: 1.5rem;
+  align-self: center;
+  cursor: pointer;
+  color: red;
+}
+
+.icon-button-edit {
+  font-size: 1.6rem;
+  align-self: center;
+  padding-right: 1rem;
+  cursor: pointer;
+}
+
+.flex {
+  display:flex
+}
+
+.category-body {
+  display: flex;
+  justify-content: center;
 }
 
 .view-expenses {
-  margin: 5rem;
-  padding: 1rem;
+  padding-top: 1rem;
+  text-align: center;
 }
+
+.expenses-view-header {
+  text-align: center;
+  font-size: 2rem;
+  padding-bottom: 2rem;
+  font-weight: bold;
+}
+
+.expenses-table {
+  text-align: center;
+  margin-left:auto; 
+  margin-right:auto;
+  border: 0.1rem solid black;
+  border-collapse: collapse;
+  width: 100%;
+  overflow: scroll;
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  .table-body-name{
+    border: 0.5 solid black;
+  }
+  td {
+    font-size: 1.5rem;
+    padding: 0.2rem 1rem;
+    border: 0.1rem solid black;
+  }
+  th {
+    padding: 1rem;
+    border: 0.1rem solid black;
+    font-size: 2rem;
+  }
+}
+
+.table-head {
+  font-size: 2rem;
+}
+
+.table-body-name {
+  display: flex;
+  justify-content: space-between;
+  border-collapse: collapse;
+  .icon-button-edit {
+    padding: 0 .25rem;
+  }
+  .icon-button-delete {
+    padding: 0 .25rem;
+  }
+  .table-name {
+    font-weight: bold;
+  }
+}
+
+.table-body {
+  border: 0.1rem solid black;
+  border-collapse: collapse;
+}
+
+.table-info {
+  padding: 0.2rem 1rem;
+  
+}
+
 
 .space {
   padding: 1rem;
 }
 
-.category-info {
-  font-size: 2rem;
-  margin: 1rem;
-}
+

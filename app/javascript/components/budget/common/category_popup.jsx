@@ -28,8 +28,8 @@ export default function CategoryPopup(props) {
     isOpen={isOpen}
     onRequestClose={closeModal}
     contentLabel="Example Modal"
-    overlayClassName="modal_background"
-    className="modal"
+    overlayClassName="popup_background"
+    className="popup"
     appElement={document.getElementById('app')}
 
     >

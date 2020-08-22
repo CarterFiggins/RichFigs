@@ -17,19 +17,23 @@ const MAKE_SPENT = gql`
 
 export default function ExpensePopup(props) {
 
-  const {isOpen, closeModal, monthDate } = props
+  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth } = props
 
-  // const [createSpent] = useMutation(MAKE_SPENT);
+  const [createSpent] = useMutation(MAKE_SPENT);
 
-  // let test = await createSpent({ variables: {name, amount, userId, monthId, categoryId } })
+  const saveSpent = async (name, amount) => {
+    await createSpent({ variables: {name, amount, userId: 1, monthId, categoryId: category.id } });
+    refetchMonth();
+    closeModal();
+  }
 
   return(
     <Modal
     isOpen={isOpen}
     onRequestClose={closeModal}
     contentLabel="Example Modal"
-    overlayClassName="modal_background"
-    className="modal"
+    overlayClassName="popup_background"
+    className="popup"
     appElement={document.getElementById('app')}
 
     >
@@ -43,6 +47,9 @@ export default function ExpensePopup(props) {
           <div>Name: <input /></div>
           <div>Amount: <input /></div>
           <div>Date: </div>
+        </div>
+        <div>
+          <button onClick={() => saveSpent("name", 50)}>Save</button>
         </div>
         
       </div>
