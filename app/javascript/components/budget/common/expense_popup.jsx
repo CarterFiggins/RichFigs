@@ -18,11 +18,19 @@ const MAKE_SPENT = gql`
 
 export default function ExpensePopup(props) {
 
-  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth, userId, categoryList } = props
+  // TODO: make the date out of the month and year
+  const date = new Date();
 
+  function daysInMonth(date) {
+    return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
+  }
+
+  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth, userId, categoryList } = props
   const [createSpent] = useMutation(MAKE_SPENT);
 
   const [categoryValue, setCategoryValue] = useState({ value: category.id, label: category.name})
+  const [dateValue, setDateValue] = useState({ value: date.getDate(), label: date.getDate()})
+
 
   const saveSpent = async (name, amount) => {
     await createSpent({ variables: {name, amount, userId, monthId, categoryId: category.id } });
@@ -31,11 +39,18 @@ export default function ExpensePopup(props) {
   }
 
   const categoryChange = (selectedOption) => {
-    setCategoryValue(selectedOption)
+    setCategoryValue(selectedOption);
+  }
+  const dateChange = (selectedOption) => {
+    setDateValue(selectedOption);
   }
 
   const options = _.map(categoryList, (category) => {
     return { value: category.id, label: category.name }
+  })
+
+  const dateOptions = _.map( _.range(1,daysInMonth(date) + 1), (day) => {
+    return {value: day, label: day}
   })
 
   return(
@@ -81,7 +96,17 @@ export default function ExpensePopup(props) {
             <input className="category-input" />
           </div>
           <div className="category-input-container">
-            Date: 
+          <div>
+              Date:
+            </div>
+            <div>
+              <Select 
+                className="category-input"
+                value={dateValue}
+                onChange={dateChange}
+                options={dateOptions}
+              />
+            </div>
           </div>
         </div>
         <div className="popup-bottom flex-right">
