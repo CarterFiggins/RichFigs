@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/react-hooks';
 import Modal from 'react-modal';
 import { CgCloseO } from 'react-icons/cg';
+import Select from 'react-select'
 
 const MAKE_SPENT = gql`
   mutation makeSpent($name: String!, $amount: Float!, $userId: ID!, $monthId: ID!, $categoryId: ID!) {
@@ -17,15 +18,25 @@ const MAKE_SPENT = gql`
 
 export default function ExpensePopup(props) {
 
-  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth, userId } = props
+  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth, userId, categoryList } = props
 
   const [createSpent] = useMutation(MAKE_SPENT);
+
+  const [categoryValue, setCategoryValue] = useState({ value: category.id, label: category.name})
 
   const saveSpent = async (name, amount) => {
     await createSpent({ variables: {name, amount, userId, monthId, categoryId: category.id } });
     refetchMonth();
     closeModal();
   }
+
+  const categoryChange = (selectedOption) => {
+    setCategoryValue(selectedOption)
+  }
+
+  const options = _.map(categoryList, (category) => {
+    return { value: category.id, label: category.name }
+  })
 
   return(
     <Modal
@@ -48,12 +59,13 @@ export default function ExpensePopup(props) {
               Category:
             </div>
             <div>
-            <select name="cars" id="cars" className="category-input">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
-            </select>
+              <Select 
+                className="category-input"
+                value={categoryValue}
+                onChange={categoryChange}
+                options={options}
+
+              />
             </div>
           </div>
           <div className="category-input-container">

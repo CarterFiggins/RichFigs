@@ -20,6 +20,7 @@
     "react-modal": "^3.11.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "react-select": "^3.1.0",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",

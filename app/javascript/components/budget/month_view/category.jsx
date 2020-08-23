@@ -30,7 +30,7 @@ export default function Category(props) {
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
 
-  const { category, monthId, monthDate, userId } = props;
+  const { category, monthId, monthDate, userId, categoryList } = props;
 
   const variables = {
     categoryId: category.id
@@ -97,6 +97,7 @@ export default function Category(props) {
         monthDate={monthDate}
         monthId={monthId}
         userId={userId}
+        categoryList={categoryList}
       />
     </div>
   );

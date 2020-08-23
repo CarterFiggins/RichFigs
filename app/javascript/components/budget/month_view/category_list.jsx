@@ -52,6 +52,7 @@ export default function CategoryList(props) {
             refetchMonth={refetchMonth}
             monthDate={monthDate}
             userId={userId}
+            categoryList={data.categories}
           />
         )
       })
