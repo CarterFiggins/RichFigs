@@ -17,12 +17,12 @@ const MAKE_SPENT = gql`
 
 export default function ExpensePopup(props) {
 
-  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth } = props
+  const {isOpen, closeModal, monthDate, monthId, category, refetchMonth, userId } = props
 
   const [createSpent] = useMutation(MAKE_SPENT);
 
   const saveSpent = async (name, amount) => {
-    await createSpent({ variables: {name, amount, userId: 1, monthId, categoryId: category.id } });
+    await createSpent({ variables: {name, amount, userId, monthId, categoryId: category.id } });
     refetchMonth();
     closeModal();
   }
@@ -43,13 +43,37 @@ export default function ExpensePopup(props) {
           <div className="popup-close" onClick={closeModal}><CgCloseO /></div>
         </div>
         <div className="popup-body">
-          <div>Category:  </div>
-          <div>Name: <input /></div>
-          <div>Amount: <input /></div>
-          <div>Date: </div>
+          <div className="category-input-container">
+            <div>
+              Category:
+            </div>
+            <div>
+            <select name="cars" id="cars" className="category-input">
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option>
+            </select>
+            </div>
+          </div>
+          <div className="category-input-container">
+            <div>
+              Name: 
+            </div>
+            <input className="category-input" />
+          </div>
+          <div className="category-input-container">
+            <div>
+              Amount: 
+            </div>
+            <input className="category-input" />
+          </div>
+          <div className="category-input-container">
+            Date: 
+          </div>
         </div>
-        <div>
-          <button onClick={() => saveSpent("name", 50)}>Save</button>
+        <div className="popup-bottom flex-right">
+          <button className="btn-save" onClick={() => saveSpent("name", 50)}>Save</button>
         </div>
         
       </div>

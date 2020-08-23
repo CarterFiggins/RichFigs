@@ -19,7 +19,7 @@ const GET_CATEGORIES = gql`
 
 export default function CategoryList(props) {
 
-  const { monthId, monthDate } = props
+  const { monthId, monthDate, userId} = props
 
   const variables = {
     monthId: monthId
@@ -51,6 +51,7 @@ export default function CategoryList(props) {
             monthId={monthId}
             refetchMonth={refetchMonth}
             monthDate={monthDate}
+            userId={userId}
           />
         )
       })

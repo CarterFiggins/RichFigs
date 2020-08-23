@@ -17,6 +17,8 @@
 
 .center {
   text-align: center;
+  justify-content: center;
+
 }
 
 .month-info {
@@ -30,7 +32,6 @@
 
 .goto-month-name {
   padding: 1rem;
-
 }
 
 .category-box {
@@ -66,6 +67,17 @@
   padding: 0 1rem 0 .5rem;
 }
 
+.category-input-container {
+  display: flex;
+  justify-content: space-between;
+  padding: .5rem 0;
+}
+
+.category-input {
+  width: 19rem;
+  font-size: 1.5rem;
+}
+
 .icon-button-add {
   font-size: 1.4rem;
   align-self: center;
@@ -89,7 +101,12 @@
 }
 
 .flex {
-  display:flex
+  display: flex;
+}
+
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .category-body {
@@ -162,9 +179,41 @@
   
 }
 
+.title {
+  font-size: 2rem;
+  text-align: center;
+  padding-bottom: 1rem;
+}
 
 .space {
   padding: 1rem;
 }
+
+.btn-container {
+  text-align: center;
+  padding: 1rem;
+}
+
+.btn-delete {
+  font-size: 1.5rem;
+  padding: 1rem;
+  border-radius: .5rem;
+}
+
+.btn-cancel {
+  font-size: 1.5rem;
+  padding: 1rem;
+  border-radius: .5rem;
+}
+
+.btn-save {
+  font-size: 2rem;
+  padding: 0.2rem 1rem;
+  border-color: green;
+  border-radius: .5rem;
+  color: white;
+  background-color: green;
+}
+
 
 

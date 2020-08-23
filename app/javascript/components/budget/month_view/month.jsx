@@ -33,6 +33,8 @@ export default function Month() {
   const [yearDate, setYearDate] = useState(year);
   const [monthDate, setMonth] = useState(month);
 
+  const USER_ID = 1;
+
   // find a way to get accountID
   const variables = {
     yearDate: yearDate,
@@ -64,7 +66,7 @@ export default function Month() {
       </div>
       <div className="large-text center">{data.year.yearDate}</div>
       <div>
-        <MonthInfo info={data.month} />
+        <MonthInfo info={data.month} userId={USER_ID} />
       </div>
       <div className="category-title">
         Categories 
@@ -73,7 +75,7 @@ export default function Month() {
         </button>
       </div>
       <div>
-        <CategoryList monthId={data.month.id} monthDate={monthDate} refetchMonth={refetch} />
+        <CategoryList monthId={data.month.id} monthDate={monthDate} refetchMonth={refetch} userId={USER_ID} />
       </div>
       <CategoryPopup 
         isOpen={isOpen}

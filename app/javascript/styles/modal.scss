@@ -48,6 +48,21 @@
   padding: 1rem 2rem;
 }
 
+.small_popup {
+  position: absolute;
+  align-self: center;
+  @include center(horizontal);
+  background: #ffffff;
+  box-shadow: 0 0 1rem rgba(0,0,0,0.5);
+  @include transition(all 0.3s ease);
+  outline: none;
+  bottom: 1%;
+  top: 15rem;
+  width: 20rem;
+  height: 10rem;
+  padding: 1rem 2rem;
+}
+
 .popup-header{
   display: flex;
   flex-direction: row;
@@ -70,9 +85,6 @@
 .popup-body{
   margin: 0 2rem;
   font-size: 1.5rem;
-  &div {
-    padding: 1rem;
-  }
 }
 
 .popup_background{
@@ -86,6 +98,11 @@
   background: rgba(0,0,0,0.6);
   z-index: 900;
 
+}
+
+.popup-bottom {
+  padding: 1rem;
+  
 }
 
 

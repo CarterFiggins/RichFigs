@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
+import { gql } from '@apollo/client';
+import { useMutation } from '@apollo/react-hooks';
 import Modal from 'react-modal';
-import { ImBin } from 'react-icons/im'
-import { FiEdit } from 'react-icons/fi'
+import DeletePopup from './delete_popup';
+import { ImBin } from 'react-icons/im';
+import { FiEdit } from 'react-icons/fi';
+
+const DELETE_SPENT = gql`
+  mutation deleteSpent($spentId: ID!, $monthId: ID!, $categoryId: ID!) {
+    deleteSpent(spentId: $spentId, monthId: $monthId, categoryId: $categoryId){
+      deleted
+    }
+  }
+`;
 
 
 export default function ExpenseViewPopup(props) {
 
-  const {isOpen, closeModal, spents, category } = props
+  const {isOpen, closeModal, spents, category, refetchMonth, monthId } = props
 
-  // TODO: make Delete and Edit for spent
+  const [deleteSpent] = useMutation(DELETE_SPENT);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [spentId, setSpentId] = useState(null);
+
+  // TODO: make Edit for spent. Add X to view
+
+  const deleteItem = async () => {
+    if(spentId) {
+      await deleteSpent({variables: {spentId, monthId, categoryId: category.id}});
+      refetchMonth();
+      setSpentId(null);
+    }
+  }
 
   return(
     <Modal
@@ -46,7 +69,13 @@ export default function ExpenseViewPopup(props) {
                       <div className="icon-button-edit">
                         <FiEdit />
                       </div>
-                      <div className="icon-button-delete">
+                      <div
+                        className="icon-button-delete"
+                        onClick={() => {
+                          setIsDeleteOpen(true);
+                          setSpentId(spent.id);
+                       }}
+                      >
                         <ImBin />
                       </div>
                     </div>
@@ -60,6 +89,11 @@ export default function ExpenseViewPopup(props) {
           })}
         </tbody>
       </table>
+      <DeletePopup
+        isOpen={isDeleteOpen}
+        closeModal={() => setIsDeleteOpen(false)}
+        deleteItem={() => deleteItem()}
+      />
     </div>
     </Modal>
   );

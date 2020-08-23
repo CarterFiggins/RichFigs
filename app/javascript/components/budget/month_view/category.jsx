@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 import { gql } from '@apollo/client';
-import { useQuery, useMutation} from '@apollo/react-hooks';
+import { useQuery} from '@apollo/react-hooks';
 import ExpensePopup from '../common/expense_popup';
 import { BsPlusCircleFill } from 'react-icons/bs'
 import { ImBin } from 'react-icons/im'
@@ -24,23 +24,13 @@ const GET_SPENTS = gql`
   }
 `;
 
-const MAKE_SPENT = gql`
-  mutation makeSpent($name: String!, $amount: Float!, $userId: ID!, $monthId: ID!, $categoryId: ID!) {
-    createSpent(name: $name, amount: $amount, userId: $userId, monthId: $monthId, categoryId: $categoryId) {
-      spent {
-        id
-      }
-    }
-  }
-`;
-
 
 export default function Category(props) {
 
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
 
-  const { category, monthId, monthDate } = props;
+  const { category, monthId, monthDate, userId } = props;
 
   const variables = {
     categoryId: category.id
@@ -97,6 +87,7 @@ export default function Category(props) {
         refetchMonth={refetchMonth}
         spents={data.spents}
         category={category}
+        monthId={monthId}
       />
       <ExpensePopup
         isOpen={isOpenAdd}
@@ -105,6 +96,7 @@ export default function Category(props) {
         category={category}
         monthDate={monthDate}
         monthId={monthId}
+        userId={userId}
       />
     </div>
   );
