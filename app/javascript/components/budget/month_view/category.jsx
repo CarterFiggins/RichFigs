@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 import { gql } from '@apollo/client';
-import { useQuery} from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import ExpensePopup from '../common/expense_popup';
 import { BsPlusCircleFill } from 'react-icons/bs'
 import { ImBin } from 'react-icons/im'
 import { FiEdit } from 'react-icons/fi'
 import ExpenseViewPopup from '../common/expense_view_popup';
+import DeletePopup from '../common/delete_popup';
 
 
 const GET_SPENTS = gql`
@@ -24,11 +25,20 @@ const GET_SPENTS = gql`
   }
 `;
 
+const DELETE_CATEGORY = gql`
+  mutation deleteSpent($monthId: ID!, $categoryId: ID!) {
+    deleteCategory(monthId: $monthId, categoryId: $categoryId){
+      deleted
+    }
+  }
+`;
+
 
 export default function Category(props) {
 
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const { category, monthId, monthDate, userId, categoryList } = props;
 
@@ -37,6 +47,7 @@ export default function Category(props) {
   };
 
   const { loading, error, data, refetch } = useQuery(GET_SPENTS, { variables });
+  const [deleteCategory] = useMutation(DELETE_CATEGORY);
 
   if (error){ 
     console.log(error);
@@ -46,11 +57,15 @@ export default function Category(props) {
     return <div> Loading </div>;
   }
 
-
   const refetchMonth = () => {
     refetch();
     props.refetchMonth();
-  }
+  };
+
+  const deleteItem = async () => {
+    await deleteCategory({ variables: { monthId, categoryId: category.id } })
+    refetchMonth()
+  };
 
   return(
     <div className="category-box">
@@ -62,25 +77,31 @@ export default function Category(props) {
           <div className="icon-button-edit">
             <FiEdit />
           </div>
-          <div className="icon-button-delete">
+          <div className="icon-button-delete" onClick={() => setIsDeleteOpen(true)}>
             <ImBin />
           </div>
         </div>
       </div>
       <div className="category-body">
+        { !category.isFixed && (
+          <div className="category-value">
+            Planned: ${category.planned}
+          </div>
+        )}
         <div className="category-value">
-          Planned: ${category.planned}
+          Expense: ${category.expense}
         </div>
-        <div className="category-value">
-          Expenses: ${category.expense}
-        </div>
-        <div className="icon-button-add" onClick={() => setIsOpenAdd(true)}>
-          <BsPlusCircleFill />
-        </div>
+        { !category.isFixed && (
+          <div className="icon-button-add" onClick={() => setIsOpenAdd(true)}>
+            <BsPlusCircleFill />
+          </div>
+        )}
       </div>
-      <div className="view-expenses">
-        <button onClick={() => setIsOpenView(true)}>View Expenses</button>
-      </div>
+      { !category.isFixed && (
+        <div className="view-expenses">
+          <button onClick={() => setIsOpenView(true)}>View Expenses</button>
+        </div>
+       )}
       <ExpenseViewPopup
         isOpen={isOpenView}
         closeModal={() => setIsOpenView(false)}
@@ -88,16 +109,23 @@ export default function Category(props) {
         spents={data.spents}
         category={category}
         monthId={monthId}
+        userId={userId}
+        categoryList={categoryList}
       />
       <ExpensePopup
         isOpen={isOpenAdd}
         closeModal={() => setIsOpenAdd(false)}
         refetchMonth={refetchMonth}
         category={category}
-        monthDate={monthDate}
         monthId={monthId}
         userId={userId}
         categoryList={categoryList}
+        isEdit={false}
+      />
+      <DeletePopup
+        isOpen={isDeleteOpen}
+        closeModal={() => setIsDeleteOpen(false)}
+        deleteItem={() => deleteItem()}
       />
     </div>
   );

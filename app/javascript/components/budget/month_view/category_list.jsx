@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { gql } from '@apollo/client';
 import Category from './category';
 import { useQuery } from '@apollo/react-hooks';
-
+import CategoryPopup from '../common/category_popup'
 
 const GET_CATEGORIES = gql`
   query CategoryList($monthId: ID!){
@@ -19,7 +19,7 @@ const GET_CATEGORIES = gql`
 
 export default function CategoryList(props) {
 
-  const { monthId, monthDate, userId} = props
+  const { monthId, monthDate, userId, isOpen, closeModal} = props
 
   const variables = {
     monthId: monthId
@@ -43,7 +43,8 @@ export default function CategoryList(props) {
   }
 
   return(
-      _.map(data.categories, (category)=> {
+    <div>
+      {_.map(data.categories, (category)=> {
         return (
           <Category
             key={category.id}
@@ -55,7 +56,14 @@ export default function CategoryList(props) {
             categoryList={data.categories}
           />
         )
-      })
+      })}
+      <CategoryPopup 
+        isOpen={isOpen}
+        closeModal={closeModal}
+        monthId={monthId}
+        refetchMonth={refetchMonth}
+      />
+    </div>
   );
 
   

@@ -43,6 +43,7 @@
 .category-title {
   text-align: center;
   justify-content: center;
+  display: flex;
   margin: 1rem;
   font-size: 2rem;
 }
@@ -64,12 +65,18 @@
 .category-value {
   font-size: 2rem;
   text-align: center;
-  padding: 0 1rem 0 .5rem;
+  padding-left: 1rem;
 }
 
-.category-input-container {
+.input-container {
   display: flex;
   justify-content: space-between;
+  padding: .5rem 0;
+}
+
+.input-container-left {
+  display: flex;
+  justify-content: flex-start;
   padding: .5rem 0;
 }
 
@@ -78,11 +85,30 @@
   font-size: 1.5rem;
 }
 
+
+.checkbox-popup-fixed {
+  padding-left: 3rem;
+}
+
+.checkbox-popup-repeat {
+  padding-left: 2.2rem;
+}
+
+.category-checkbox {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.category-checkbox:checked {
+  background-color: #00aaff;
+}
+
 .icon-button-add {
   font-size: 1.4rem;
   align-self: center;
   justify-content: center;
   cursor: pointer;
+  padding-left: .5rem;
   color: green;
 }
 

@@ -5,7 +5,7 @@ import Menu from './menu';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import CategoryList from './category_list';
-import CategoryPopup from '../common/category_popup'
+import { BsPlusCircleFill } from 'react-icons/bs'
 
 const GET_MONTH_INFO = gql`
   query MonthData($yearDate: Int, $date: String, $accountID: ID!) {
@@ -54,8 +54,6 @@ export default function Month() {
     return <div> Loading </div>
   }
 
-
-
   return(
     <div>
       <div>
@@ -69,18 +67,23 @@ export default function Month() {
         <MonthInfo info={data.month} userId={USER_ID} />
       </div>
       <div className="category-title">
-        Categories 
-        <button onClick={() => setIsOpen(true)}>
-          Add Category
-        </button>
+        <div>
+          Categories 
+        </div>
+        <div className="icon-button-add" onClick={() => setIsOpen(true)}>
+          <BsPlusCircleFill />
+        </div>
       </div>
       <div>
-        <CategoryList monthId={data.month.id} monthDate={monthDate} refetchMonth={refetch} userId={USER_ID} />
+        <CategoryList
+          monthId={data.month.id}
+          monthDate={monthDate}
+          refetchMonth={refetch}
+          userId={USER_ID}
+          isOpen={isOpen}
+          closeModal={() => setIsOpen(false)}
+        />
       </div>
-      <CategoryPopup 
-        isOpen={isOpen}
-        closeModal={() => setIsOpen(false)}
-      />
     </div>
   );
   

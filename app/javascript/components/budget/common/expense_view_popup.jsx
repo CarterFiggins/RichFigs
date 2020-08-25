@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import DeletePopup from './delete_popup';
 import { ImBin } from 'react-icons/im';
 import { FiEdit } from 'react-icons/fi';
+import ExpensePopup from './expense_popup';
 
 const DELETE_SPENT = gql`
   mutation deleteSpent($spentId: ID!, $monthId: ID!, $categoryId: ID!) {
@@ -15,22 +16,22 @@ const DELETE_SPENT = gql`
   }
 `;
 
-
 export default function ExpenseViewPopup(props) {
 
-  const {isOpen, closeModal, spents, category, refetchMonth, monthId } = props
+  const {isOpen, closeModal, spents, category, refetchMonth, monthId, userId, categoryList } = props
 
   const [deleteSpent] = useMutation(DELETE_SPENT);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [spentId, setSpentId] = useState(null);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [currentSpent, setCurrentSpent] = useState(null);
 
   // TODO: make Edit for spent. Add X to view
 
   const deleteItem = async () => {
-    if(spentId) {
-      await deleteSpent({variables: {spentId, monthId, categoryId: category.id}});
+    if(currentSpent) {
+      await deleteSpent({ variables: {spentId: currentSpent.id, monthId, categoryId: category.id}});
       refetchMonth();
-      setSpentId(null);
+      setCurrentSpent(null);
     }
   }
 
@@ -66,14 +67,19 @@ export default function ExpenseViewPopup(props) {
                       {spent.name}
                     </div>
                     <div className="flex">
-                      <div className="icon-button-edit">
+                      <div className="icon-button-edit"
+                        onClick={() => {
+                          setCurrentSpent(spent);
+                          setIsOpenEdit(true);
+                        }}
+                      >
                         <FiEdit />
                       </div>
                       <div
                         className="icon-button-delete"
                         onClick={() => {
+                          setCurrentSpent(spent);
                           setIsDeleteOpen(true);
-                          setSpentId(spent.id);
                        }}
                       >
                         <ImBin />
@@ -93,6 +99,17 @@ export default function ExpenseViewPopup(props) {
         isOpen={isDeleteOpen}
         closeModal={() => setIsDeleteOpen(false)}
         deleteItem={() => deleteItem()}
+      />
+      <ExpensePopup
+        isOpen={isOpenEdit}
+        closeModal={() => setIsOpenEdit(false)}
+        refetchMonth={refetchMonth}
+        isEdit={isOpenEdit}
+        category={category}
+        monthId={monthId}
+        userId={userId}
+        categoryList={categoryList}
+        spent={currentSpent}
       />
     </div>
     </Modal>
