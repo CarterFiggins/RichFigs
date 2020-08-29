@@ -59,32 +59,32 @@ export default function MonthInfo(props) {
           Next Month
         </span>
       </div>
-      <div className="center">
-        <span className="month-info">
+      <div className="month-info">
+        <div className="month-info-container">
           Total: ${_.round(info.income - info.expense,2)}
-        </span>
-        <span className="month-info">
+        </div>
+        <div className="month-info-container flex">
           Income: ${_.round(info.income,2)}
-          <span className="icon-button-add" onClick={fireIncomePopup}>
+          <div className="icon-button-add" onClick={fireIncomePopup}>
             <BsPlusCircleFill />
-          </span>
+          </div>
           {data.incomes.length != 0 && (
-            <span className="icon-button" onClick={() => setIsOpenView(true)}>
+            <div className="icon-button" onClick={() => setIsOpenView(true)}>
               <BsFillEyeFill />
-            </span>
+            </div>
           )}
-        </span>
-        <span className="month-info">
+        </div>
+        <div className="month-info-container">
           Planned: ${_.round(info.planned,2)}
-        </span>
-        <span className="month-info">
+        </div>
+        <div className="month-info-container">
           Expenses: ${_.round(info.expense,2)}
-        </span>
+        </div>
       </div>
       <IncomePopup
         isOpen={isOpenIncome}
         closeModal={closePopup}
-        refetchMonth={() => { refetchMonth(); refetch(); }}
+        refetchMonth={refetchMonth}
         monthId={monthId}
         userId={userId}
       />

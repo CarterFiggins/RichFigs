@@ -22,6 +22,12 @@
 }
 
 .month-info {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+
+.month-info-container {
   font-size: 2rem;
   padding: 2rem;
 }
