@@ -68,9 +68,11 @@ export default function MonthInfo(props) {
           <span className="icon-button-add" onClick={fireIncomePopup}>
             <BsPlusCircleFill />
           </span>
-          <span className="icon-button" onClick={() => setIsOpenView(true)}>
-            <BsFillEyeFill />
-          </span>
+          {data.incomes.length != 0 && (
+            <span className="icon-button" onClick={() => setIsOpenView(true)}>
+              <BsFillEyeFill />
+            </span>
+          )}
         </span>
         <span className="month-info">
           Planned: ${_.round(info.planned,2)}
@@ -82,7 +84,7 @@ export default function MonthInfo(props) {
       <IncomePopup
         isOpen={isOpenIncome}
         closeModal={closePopup}
-        refetchMonth={refetchMonth}
+        refetchMonth={() => { refetchMonth(); refetch(); }}
         monthId={monthId}
         userId={userId}
       />

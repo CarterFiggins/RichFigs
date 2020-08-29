@@ -103,9 +103,11 @@ export default function Category(props) {
             <div className="icon-button-add" onClick={() => setIsOpenAdd(true)}>
               <BsPlusCircleFill />
             </div>
-            <div className="icon-button" onClick={() => setIsOpenView(true)}>
-              <BsFillEyeFill />
-            </div>
+            {data.spents.length != 0 && (
+              <div className="icon-button" onClick={() => setIsOpenView(true)}>
+                <BsFillEyeFill />
+              </div>
+            )}
           </>
         )}
       </div>

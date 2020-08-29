@@ -7,6 +7,7 @@ import DeletePopup from '../common/delete_popup';
 import { ImBin } from 'react-icons/im';
 import { FiEdit } from 'react-icons/fi';
 import IncomePopup from './income_popup';
+import { CgCloseO } from 'react-icons/cg';
 
 const DELETE_INCOME = gql`
   mutation deleteIncome($incomeId: ID!, $monthId: ID!) {
@@ -38,6 +39,9 @@ export default function ExpenseViewPopup(props) {
       await deleteIncome({ variables: {incomeId: currentIncome.id, monthId}});
       refetchMonth();
       setCurrentIncome(null);
+      if (incomes.length <= 1) {
+        closeModal()
+      }
     }
   }
 
@@ -52,7 +56,8 @@ export default function ExpenseViewPopup(props) {
     >
      <div>
       <div className="expenses-view-header">
-        Month Income
+        Month's Income
+        <div className="popup-close" onClick={closeModal}><CgCloseO /></div>
       </div>
       <table className="expenses-table">
         <thead>

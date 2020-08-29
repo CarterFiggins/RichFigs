@@ -155,10 +155,12 @@
 }
 
 .expenses-view-header {
+  display: flex;
   text-align: center;
   font-size: 2rem;
   padding-bottom: 2rem;
   font-weight: bold;
+  justify-content: space-between;
 }
 
 .expenses-table {
