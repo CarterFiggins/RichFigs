@@ -3,88 +3,109 @@ import _ from 'lodash';
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/react-hooks';
 import Modal from 'react-modal';
+import Select from 'react-select'
 import { CgCloseO } from 'react-icons/cg';
 
 
-const MAKE_CATEGORY = gql`
-  mutation makeCategory($name: String!, $amount: Float!, $isFixed: Boolean!, $monthId: ID!, $repeated: Boolean, $isEdit: Boolean, $categoryId: ID) {
-    createCategory(name: $name, amount: $amount, isFixed: $isFixed, monthId: $monthId, repeated: $repeated, isEdit: $isEdit, categoryId: $categoryId) {
-      category {
-        id
-      }
+const MAKE_INCOME = gql`
+  mutation makeIncome(
+    $name: String!,
+    $amount: Float!,
+    $userId: ID!,
+    $monthId: ID!,
+    $repeated: Boolean,
+    $date: Int!,
+    $incomeId: ID,
+  ){
+    createIncome(
+      name: $name,
+      amount: $amount,
+      userId: $userId,
+      monthId: $monthId,
+      repeated: $repeated,
+      date: $date,
+      incomeId: $incomeId,
+    ){
+      success
     }
   }
 `;
 
-export default function CategoryPopup(props) {
+export default function IncomePopup(props) {
 
-  const {isOpen, closeModal, monthId, refetchMonth, isEdit, category} = props
+  const date = new Date();
+
+  function daysInMonth(date) {
+    return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
+  }
+
+  const {isOpen, closeModal, monthId, userId, refetchMonth, income} = props
 
   const [amountValue, setAmountValue] = useState('');
   const [nameValue, setNameValue] = useState('');
-  const [fixed, setFixed] = useState(false);
+  const [dateValue, setDateValue] = useState({ value: date.getDate(), label: date.getDate()});
   const [repeated, setRepeated] = useState(false);
+
+  const [createIncome] = useMutation(MAKE_INCOME);
+
+  
 
   useEffect(
     () => {
-      if(isEdit) {
-        if(category.isFixed) {
-          setAmountValue(category.expense)
-        }
-        else {
-          setAmountValue(category.planned);
-        }
-        setNameValue(category.name);
-        setFixed(category.isFixed);
-        setRepeated(category.repeat_id ? true : false);
+      if(income) {
+       // set up popup with income values
+       setAmountValue(income.amount);
+       setNameValue(income.name);
+       setDateValue({ value: parseInt(income.date.split('-')[2]), label: parseInt(income.date.split('-')[2]) })
       }
     },
-    [isEdit]
+    [income]
   );
 
   const amountChange = (event) => {
-    if(event.target.value === NaN) {
-      setAmountValue('');
+    if(event.target.value) {
+      setAmountValue(parseFloat(event.target.value));
     }
     else{
-      setAmountValue(parseFloat(event.target.value));
+      setAmountValue('');
     }
   }
   const nameChange = (event) => {
     setNameValue(event.target.value);
   }
-  const fixedChange = (event) => {
-    setFixed(event.target.checked)
-  }
   const repeatedChange = (event => {
     setRepeated(event.target.checked)
   })
+  const dateChange = (selectedOption) => {
+    setDateValue(selectedOption);
+  }
 
-  const saveCategory = async () => {
+
+  const saveIncome = async () => {
     if (amountValue && nameValue){
-      await createCategory({
+      await createIncome({
         variables: {
           name: nameValue,
           amount: amountValue,
-          isFixed: fixed,
+          userId,
           monthId,
           repeated,
-          isEdit,
-          categoryId: category ? category.id : null
+          date: dateValue.label,
+          incomeId: income ? income.id : null,
         }
       });
-      if(!isEdit) {
+      if(!income) {
         setAmountValue('');
         setNameValue('');
-        setFixed(false);
-        setRepeated(false);
       }
       refetchMonth();
       closeModal();
     }
   }
 
-  const [createCategory] = useMutation(MAKE_CATEGORY);
+  const dateOptions = _.map( _.range(1,daysInMonth(date) + 1), (day) => {
+    return {value: day, label: day}
+  })
 
   return(
     <Modal
@@ -98,7 +119,7 @@ export default function CategoryPopup(props) {
       <div>
         <div className="popup-header">
           <div className="popup-title">
-            {isEdit ? 'Edit' : 'Add'} Category
+            {income ? 'Edit' : 'Add'} Income
           </div>
           <div className="popup-close" onClick={closeModal}><CgCloseO /></div>
         </div>
@@ -108,14 +129,8 @@ export default function CategoryPopup(props) {
             <input className="category-input" type="text" value={nameValue} onChange={nameChange} />
           </div>
           <div className="input-container">
-            <div>{fixed ? 'Expense:' : 'Planned:' }</div>
+            <div>Income: </div>
             <input className="category-input" type="number" value={amountValue} onChange={amountChange} />
-          </div>
-          <div className="input-container-left">
-            <div>Fixed: </div>
-            <div className="checkbox-popup-fixed">
-              <input className="category-checkbox" type="checkbox" checked={fixed} onChange={fixedChange} />
-            </div>
           </div>
           <div className="input-container-left">
             <div>Repeat: </div>
@@ -123,9 +138,22 @@ export default function CategoryPopup(props) {
               <input className="category-checkbox" type="checkbox" checked={repeated} onChange={repeatedChange} />
             </div>
           </div>
+          <div className="input-container">
+            <div>
+              Date:
+            </div>
+            <div>
+              <Select 
+                className="category-input"
+                value={dateValue}
+                onChange={dateChange}
+                options={dateOptions}
+              />
+            </div>
+          </div>
         </div>
         <div className="popup-bottom flex-right">
-          <button className="btn-save" onClick={saveCategory}>Save</button>
+          <button className="btn-save" onClick={saveIncome}>Save</button>
         </div>
       </div>
       

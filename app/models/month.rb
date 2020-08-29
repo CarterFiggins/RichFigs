@@ -2,4 +2,5 @@ class Month < ApplicationRecord
     belongs_to :year
     has_many :categories
     has_many :pays
+    has_many :incomes
 end

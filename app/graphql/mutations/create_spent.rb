@@ -17,9 +17,16 @@ class Mutations::CreateSpent < Mutations::BaseMutation
     date = Time.new(2020, Date::MONTHNAMES.index(month.date), date)
     if (editing)
       oldSpent = Spent.find(spent_id)
-      category.update(expense: amount - oldSpent.amount + category.expense)
-      month.update(expense: amount - oldSpent.amount + month.expense)
-      spent = Spent.find(spent_id).update(name: name, amount: amount, user_id: user_id, category_id: category_id, date: date)
+      if(oldSpent.category_id === spent_id)
+        category.update(expense: category.expense + amount - oldSpent.amount)
+      
+      else 
+        oldCategory = Category.find(oldSpent.category_id)
+        oldCategory.update(expense: oldCategory.expense - amount)
+        category.update(expense: category.expense + amount)
+      end
+      month.update(expense: month.expense + amount - oldSpent.amount)
+      oldSpent.update(name: name, amount: amount, user_id: user_id, category_id: category_id, date: date)
       {success: true}
     
     else 

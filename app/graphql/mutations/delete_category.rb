@@ -8,7 +8,8 @@ class Mutations::DeleteCategory < Mutations::BaseMutation
   def resolve(month_id:, category_id:)
     category = Category.find(category_id)
     month = Month.find(month_id)
-    month.update(expense: month.expense - category.expense)
+    month.update(expense: month.expense - category.expense, planned: month.planned - category.planned)
+    Spent.where(category_id: category_id).delete_all
     category.delete
     {deleted: true}
   end

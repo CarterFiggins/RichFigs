@@ -3,11 +3,12 @@ import _ from 'lodash';
 import { gql } from '@apollo/client';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import ExpensePopup from '../common/expense_popup';
-import { BsPlusCircleFill } from 'react-icons/bs'
+import { BsPlusCircleFill, BsFillEyeFill } from 'react-icons/bs'
 import { ImBin } from 'react-icons/im'
 import { FiEdit } from 'react-icons/fi'
 import ExpenseViewPopup from '../common/expense_view_popup';
 import DeletePopup from '../common/delete_popup';
+import CategoryPopup from '../common/category_popup';
 
 
 const GET_SPENTS = gql`
@@ -39,6 +40,7 @@ export default function Category(props) {
   const [isOpenAdd, setIsOpenAdd] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
 
   const { category, monthId, monthDate, userId, categoryList } = props;
 
@@ -74,7 +76,7 @@ export default function Category(props) {
           {category.name} 
         </div>
         <div className="flex">
-          <div className="icon-button-edit">
+          <div className="icon-button-edit" onClick={() => setIsOpenEdit(true)}>
             <FiEdit />
           </div>
           <div className="icon-button-delete" onClick={() => setIsDeleteOpen(true)}>
@@ -84,24 +86,29 @@ export default function Category(props) {
       </div>
       <div className="category-body">
         { !category.isFixed && (
-          <div className="category-value">
-            Planned: ${category.planned}
-          </div>
+          <>
+            <div className="category-value">
+              Left Over: ${category.planned - category.expense}
+            </div>
+            <div className="category-value">
+              Planned: ${category.planned}
+            </div>
+          </>
         )}
         <div className="category-value">
           Expense: ${category.expense}
         </div>
         { !category.isFixed && (
-          <div className="icon-button-add" onClick={() => setIsOpenAdd(true)}>
-            <BsPlusCircleFill />
-          </div>
+          <>
+            <div className="icon-button-add" onClick={() => setIsOpenAdd(true)}>
+              <BsPlusCircleFill />
+            </div>
+            <div className="icon-button" onClick={() => setIsOpenView(true)}>
+              <BsFillEyeFill />
+            </div>
+          </>
         )}
       </div>
-      { !category.isFixed && (
-        <div className="view-expenses">
-          <button onClick={() => setIsOpenView(true)}>View Expenses</button>
-        </div>
-       )}
       <ExpenseViewPopup
         isOpen={isOpenView}
         closeModal={() => setIsOpenView(false)}
@@ -126,6 +133,14 @@ export default function Category(props) {
         isOpen={isDeleteOpen}
         closeModal={() => setIsDeleteOpen(false)}
         deleteItem={() => deleteItem()}
+      />
+      <CategoryPopup
+        isOpen={isOpenEdit}
+        closeModal={() => setIsOpenEdit(false)}
+        monthId={monthId}
+        refetchMonth={refetchMonth}
+        category={category}
+        isEdit={true}
       />
     </div>
   );

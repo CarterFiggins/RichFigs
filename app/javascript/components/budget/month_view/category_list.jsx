@@ -62,6 +62,7 @@ export default function CategoryList(props) {
         closeModal={closeModal}
         monthId={monthId}
         refetchMonth={refetchMonth}
+        isEdit={false}
       />
     </div>
   );

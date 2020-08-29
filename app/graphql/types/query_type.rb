@@ -55,7 +55,12 @@ module Types
       Category.where(month_id: month_id[:month_id])
     end
 
-
-
+    field :incomes, [Types::IncomeType], null: false do
+      description "get income from month"
+      argument :month_id, ID, required: true
+    end
+    def incomes(month_id)
+      Income.where(month_id: month_id[:month_id])
+    end
   end
 end

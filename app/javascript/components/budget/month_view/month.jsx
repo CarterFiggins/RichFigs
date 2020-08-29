@@ -44,7 +44,8 @@ export default function Month() {
 
   const { loading, error, data, refetch } = useQuery(GET_MONTH_INFO, { variables });
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenCategory, setIsOpenCategory] = useState(false);
+  const [isOpenIncome, setIsOpenIncome] = useState(false);
 
   if (error){ 
     console.log(error)
@@ -64,13 +65,21 @@ export default function Month() {
       </div>
       <div className="large-text center">{data.year.yearDate}</div>
       <div>
-        <MonthInfo info={data.month} userId={USER_ID} />
+        <MonthInfo 
+          info={data.month}
+          userId={USER_ID}
+          monthId={data.month.id}
+          fireIncomePopup={() => setIsOpenIncome(true)}
+          closePopup={() => setIsOpenIncome(false)}
+          isOpenIncome={isOpenIncome}
+          refetchMonth={refetch}
+        />
       </div>
       <div className="category-title">
         <div>
           Categories 
         </div>
-        <div className="icon-button-add" onClick={() => setIsOpen(true)}>
+        <div className="icon-button-add" onClick={() => setIsOpenCategory(true)}>
           <BsPlusCircleFill />
         </div>
       </div>
@@ -80,8 +89,8 @@ export default function Month() {
           monthDate={monthDate}
           refetchMonth={refetch}
           userId={USER_ID}
-          isOpen={isOpen}
-          closeModal={() => setIsOpen(false)}
+          isOpen={isOpenCategory}
+          closeModal={() => setIsOpenCategory(false)}
         />
       </div>
     </div>

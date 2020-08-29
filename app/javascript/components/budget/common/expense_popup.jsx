@@ -45,17 +45,6 @@ export default function ExpensePopup(props) {
   const saveSpent = async () => {
 
     if (amountValue && nameValue) {
-      let variables = {
-        name: nameValue,
-        amount: parseFloat(amountValue),
-        date: dateValue.label,
-        userId,
-        monthId,
-        categoryId: categoryValue.value,
-        editing: isEdit,
-        spentId: isEdit ? spent.id : null
-      }
-      console.log(variables)
       await createSpent({ 
         variables: {
           name: nameValue,
@@ -144,7 +133,7 @@ export default function ExpensePopup(props) {
             <input className="category-input" type="number" value={amountValue} onChange={amountChange} />
           </div>
           <div className="input-container">
-          <div>
+            <div>
               Date:
             </div>
             <div>

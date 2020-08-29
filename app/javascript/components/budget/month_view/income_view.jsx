@@ -3,14 +3,14 @@ import _ from 'lodash';
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/react-hooks';
 import Modal from 'react-modal';
-import DeletePopup from './delete_popup';
+import DeletePopup from '../common/delete_popup';
 import { ImBin } from 'react-icons/im';
 import { FiEdit } from 'react-icons/fi';
-import ExpensePopup from './expense_popup';
+import IncomePopup from './income_popup';
 
-const DELETE_SPENT = gql`
-  mutation deleteSpent($spentId: ID!, $monthId: ID!, $categoryId: ID!) {
-    deleteSpent(spentId: $spentId, monthId: $monthId, categoryId: $categoryId){
+const DELETE_INCOME = gql`
+  mutation deleteIncome($incomeId: ID!, $monthId: ID!) {
+    deleteIncome(incomeId: $incomeId, monthId: $monthId){
       deleted
     }
   }
@@ -18,14 +18,13 @@ const DELETE_SPENT = gql`
 
 export default function ExpenseViewPopup(props) {
 
-  const {isOpen, closeModal, spents, category, refetchMonth, monthId, userId, categoryList } = props
+  const {isOpen, closeModal, incomes, refetchMonth, monthId, userId } = props
 
-  const [deleteSpent] = useMutation(DELETE_SPENT);
+  const [deleteIncome] = useMutation(DELETE_INCOME);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const [currentSpent, setCurrentSpent] = useState(null);
-
-  // TODO:  Add X to  close view
+  const [currentIncome, setCurrentIncome] = useState(null);
 
   useEffect(() => {
     if(isOpen){
@@ -35,10 +34,10 @@ export default function ExpenseViewPopup(props) {
 
 
   const deleteItem = async () => {
-    if(currentSpent) {
-      await deleteSpent({ variables: {spentId: currentSpent.id, monthId, categoryId: category.id}});
+    if(currentIncome) {
+      await deleteIncome({ variables: {incomeId: currentIncome.id, monthId}});
       refetchMonth();
-      setCurrentSpent(null);
+      setCurrentIncome(null);
     }
   }
 
@@ -53,7 +52,7 @@ export default function ExpenseViewPopup(props) {
     >
      <div>
       <div className="expenses-view-header">
-        {category.name}'s Expenses
+        Month Income
       </div>
       <table className="expenses-table">
         <thead>
@@ -65,18 +64,18 @@ export default function ExpenseViewPopup(props) {
           </tr>
         </thead>
         <tbody className="table-body">
-          {_.map(spents, (spent) => {
+          {_.map(incomes, (income) => {
             return (
-              <tr key={spent.id}> 
+              <tr key={income.id}> 
                 <td>
                   <div className="table-body-name">
                     <div className="table-name">
-                      {spent.name}
+                      {income.name}
                     </div>
                     <div className="flex">
                       <div className="icon-button-edit"
                         onClick={() => {
-                          setCurrentSpent(spent);
+                          setCurrentIncome(income);
                           setIsOpenEdit(true);
                         }}
                       >
@@ -85,7 +84,7 @@ export default function ExpenseViewPopup(props) {
                       <div
                         className="icon-button-delete"
                         onClick={() => {
-                          setCurrentSpent(spent);
+                          setCurrentIncome(income);
                           setIsDeleteOpen(true);
                        }}
                       >
@@ -94,9 +93,9 @@ export default function ExpenseViewPopup(props) {
                     </div>
                   </div>
                 </td>
-                <td>{spent.amount}</td>
-                <td>{spent.date}</td>
-                <td>{spent.user.userName}</td>
+                <td>{income.amount}</td>
+                <td>{income.date}</td>
+                <td>{income.user.userName}</td>
               </tr>
             )
           })}
@@ -107,16 +106,13 @@ export default function ExpenseViewPopup(props) {
         closeModal={() => setIsDeleteOpen(false)}
         deleteItem={() => deleteItem()}
       />
-      <ExpensePopup
+      <IncomePopup
         isOpen={isOpenEdit}
         closeModal={() => setIsOpenEdit(false)}
         refetchMonth={refetchMonth}
-        isEdit={isOpenEdit}
-        category={category}
         monthId={monthId}
         userId={userId}
-        categoryList={categoryList}
-        spent={currentSpent}
+        income={currentIncome}
       />
     </div>
     </Modal>
