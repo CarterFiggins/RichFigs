@@ -6,5 +6,6 @@ class Types::CategoriesType < Types::BaseObject
   field :planned, Float, null: true
   field :expense, Float, null: true
   field :is_fixed, Boolean, null: true
+  field :repeat_id, ID, null: true
   field :date, GraphQL::Types::ISO8601Date , null: false
 end

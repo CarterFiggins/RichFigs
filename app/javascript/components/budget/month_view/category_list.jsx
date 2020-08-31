@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import _ from 'lodash';
 import { gql } from '@apollo/client';
 import Category from './category';
@@ -13,13 +13,14 @@ const GET_CATEGORIES = gql`
       planned
       expense
       isFixed
+      repeatId
     }
   }
 `;
 
 export default function CategoryList(props) {
 
-  const { monthId, monthDate, userId, isOpen, closeModal} = props
+  const { monthId, monthDate, userId, isOpen, closeModal, currentDate } = props
 
   const variables = {
     monthId: monthId
@@ -32,6 +33,10 @@ export default function CategoryList(props) {
     props.refetchMonth()
   }
 
+  useEffect(() => {
+    refetchMonth();
+  }, [])
+
   if (error){ 
     console.log(error)
     return <div> Bad things happened </div>;
@@ -39,12 +44,13 @@ export default function CategoryList(props) {
 
 
   if(loading){
-    return <div> Loading </div>
+    return null;
   }
 
   return(
     <div>
       {_.map(data.categories, (category)=> {
+        category.repeatId
         return (
           <Category
             key={category.id}
@@ -54,6 +60,7 @@ export default function CategoryList(props) {
             monthDate={monthDate}
             userId={userId}
             categoryList={data.categories}
+            currentDate={currentDate}
           />
         )
       })}
@@ -63,6 +70,7 @@ export default function CategoryList(props) {
         monthId={monthId}
         refetchMonth={refetchMonth}
         isEdit={false}
+        currentDate={currentDate}
       />
     </div>
   );

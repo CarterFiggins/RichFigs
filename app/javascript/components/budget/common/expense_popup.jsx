@@ -17,17 +17,16 @@ const MAKE_SPENT = gql`
 export default function ExpensePopup(props) {
 
   // TODO: make the date out of the month and year
-  const date = new Date();
+  const {isOpen, closeModal, monthId, category, refetchMonth, userId, categoryList, isEdit, spent, currentDate } = props;
 
   function daysInMonth(date) {
     return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
   }
 
-  const {isOpen, closeModal, monthId, category, refetchMonth, userId, categoryList, isEdit, spent} = props;
   const [createSpent] = useMutation(MAKE_SPENT);
 
   const [categoryValue, setCategoryValue] = useState({ value: category.id, label: category.name});
-  const [dateValue, setDateValue] = useState({ value: date.getDate(), label: date.getDate()});
+  const [dateValue, setDateValue] = useState({ value: currentDate.getDate(), label: currentDate.getDate()});
   const [amountValue, setAmountValue] = useState('');
   const [nameValue, setNameValue] = useState('');
 
@@ -86,7 +85,7 @@ export default function ExpensePopup(props) {
   // clears out undefined left by fixed categories
   options = options.filter( category => category != null)
 
-  const dateOptions = _.map( _.range(1,daysInMonth(date) + 1), (day) => {
+  const dateOptions = _.map( _.range(1,daysInMonth(currentDate) + 1), (day) => {
     return {value: day, label: day}
   })
 

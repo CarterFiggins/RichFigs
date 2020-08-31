@@ -27,8 +27,8 @@ const GET_SPENTS = gql`
 `;
 
 const DELETE_CATEGORY = gql`
-  mutation deleteSpent($monthId: ID!, $categoryId: ID!) {
-    deleteCategory(monthId: $monthId, categoryId: $categoryId){
+  mutation deleteSpent($monthId: ID!, $categoryId: ID!, $repeatId: ID) {
+    deleteCategory(monthId: $monthId, categoryId: $categoryId, repeatId: $repeatId){
       deleted
     }
   }
@@ -42,7 +42,7 @@ export default function Category(props) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
-  const { category, monthId, monthDate, userId, categoryList } = props;
+  const { category, monthId, userId, categoryList, currentDate } = props;
 
   const variables = {
     categoryId: category.id
@@ -56,7 +56,7 @@ export default function Category(props) {
     return <div> Bad things happened </div>;
   }
   if(loading){
-    return <div> Loading </div>;
+    return null;
   }
 
   const refetchMonth = () => {
@@ -64,8 +64,8 @@ export default function Category(props) {
     props.refetchMonth();
   };
 
-  const deleteItem = async () => {
-    await deleteCategory({ variables: { monthId, categoryId: category.id } })
+  const deleteItem = async (repeatId = null) => {
+    await deleteCategory({ variables: { monthId, categoryId: category.id, repeatId } })
     refetchMonth()
   };
 
@@ -120,6 +120,7 @@ export default function Category(props) {
         monthId={monthId}
         userId={userId}
         categoryList={categoryList}
+        currentDate={currentDate}
       />
       <ExpensePopup
         isOpen={isOpenAdd}
@@ -130,11 +131,13 @@ export default function Category(props) {
         userId={userId}
         categoryList={categoryList}
         isEdit={false}
+        currentDate={currentDate}
       />
       <DeletePopup
         isOpen={isDeleteOpen}
         closeModal={() => setIsDeleteOpen(false)}
-        deleteItem={() => deleteItem()}
+        deleteItem={(repeatId) => deleteItem(repeatId)}
+        repeatId={category.repeatId}
       />
       <CategoryPopup
         isOpen={isOpenEdit}
@@ -143,6 +146,7 @@ export default function Category(props) {
         refetchMonth={refetchMonth}
         category={category}
         isEdit={true}
+        currentDate={currentDate}
       />
     </div>
   );

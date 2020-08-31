@@ -33,17 +33,16 @@ const MAKE_INCOME = gql`
 
 export default function IncomePopup(props) {
 
-  const date = new Date();
+  const {isOpen, closeModal, monthId, userId, refetchMonth, income, currentDate} = props
 
   function daysInMonth(date) {
     return new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
   }
 
-  const {isOpen, closeModal, monthId, userId, refetchMonth, income} = props
 
   const [amountValue, setAmountValue] = useState('');
   const [nameValue, setNameValue] = useState('');
-  const [dateValue, setDateValue] = useState({ value: date.getDate(), label: date.getDate()});
+  const [dateValue, setDateValue] = useState({ value: currentDate.getDate(), label: currentDate.getDate()});
   const [repeated, setRepeated] = useState(false);
 
   const [createIncome] = useMutation(MAKE_INCOME);
@@ -103,7 +102,7 @@ export default function IncomePopup(props) {
     }
   }
 
-  const dateOptions = _.map( _.range(1,daysInMonth(date) + 1), (day) => {
+  const dateOptions = _.map( _.range(1,daysInMonth(currentDate) + 1), (day) => {
     return {value: day, label: day}
   })
 

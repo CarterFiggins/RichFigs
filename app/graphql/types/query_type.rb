@@ -17,7 +17,11 @@ module Types
       argument :account_id, ID, required: true
     end
     def year(year_date: Time.now.year, account_id:)
-      Year.find_by(account_id: account_id, year_date: year_date)
+      year = Year.find_by(account_id: account_id, year_date: year_date)
+      if !year 
+        year = Year.create(account_id: account_id, year_date: year_date)
+      end
+      year
     end
 
     field :month, Types::MonthType, null: false do
@@ -25,10 +29,16 @@ module Types
       argument :year_date, Int, required: false
       argument :date, String, required: false
       argument :account_id, ID, required: true
+      argument :month_num, Int, required: false
     end
-    def month(year_date: Time.now.year, date: Time.now.month, account_id:)
+    def month(year_date: Time.now.year, date:, account_id:, month_num: Time.now.month)
       year = Year.find_by(account_id: account_id, year_date: year_date)
-      Month.find_by(year_id: year.id, date: date)
+      month = Month.find_by(year_id: year.id, date: date)
+      if !month
+        Repeat
+        month = Month.create(date: date, month_num: month_num, year_id: year.id, income: 0, planned: 0, expense: 0)
+      end
+      month
     end
 
     field :spents, [Types::SpentType], null: false do

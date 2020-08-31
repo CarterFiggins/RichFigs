@@ -32,6 +32,8 @@ export default function MonthInfo(props) {
     refetchMonth,
     monthId,
     userId,
+    changeMonth,
+    currentDate,
   } = props
 
   const [isOpenView, setIsOpenView] = useState (false)
@@ -43,21 +45,21 @@ export default function MonthInfo(props) {
     return <div> Bad things happened </div>;
   }
   if(loading){
-    return <div> Loading </div>;
+    return null;
   }
 
   return(
     <div>
-      <div className="center">
-        <span className="goto-month-name">
+      <div className="flex center">
+        <div className="goto-month-name" onClick={() => changeMonth(-1)}>
           Pev Month
-        </span>
-        <span className="large-text main-month-name">
+        </div>
+        <div className="large-text main-month-name">
           {info.date}
-        </span>
-        <span className="goto-month-name">
+        </div>
+        <div className="goto-month-name" onClick={() => changeMonth(1)}>
           Next Month
-        </span>
+        </div>
       </div>
       <div className="month-info">
         <div className="month-info-container">
@@ -87,6 +89,7 @@ export default function MonthInfo(props) {
         refetchMonth={refetchMonth}
         monthId={monthId}
         userId={userId}
+        currentDate={currentDate}
       />
       <IncomeView
         isOpen={isOpenView}
@@ -95,6 +98,7 @@ export default function MonthInfo(props) {
         monthId={monthId}
         userId={userId}
         incomes={data.incomes}
+        currentDate={currentDate}
       />
     </div>
   );

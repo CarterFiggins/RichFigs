@@ -35,6 +35,8 @@ module Types
       description "Delete Category"
       argument :month_id, ID, required: true
       argument :category_id, ID, required: true
+      argument :repeat_id, ID, required: false
+
     end
 
     field :create_income, mutation: Mutations::CreateIncome do

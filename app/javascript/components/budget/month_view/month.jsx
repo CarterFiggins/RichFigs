@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import MonthInfo from './month_info';
 import Menu from './menu';
@@ -8,12 +8,12 @@ import CategoryList from './category_list';
 import { BsPlusCircleFill } from 'react-icons/bs'
 
 const GET_MONTH_INFO = gql`
-  query MonthData($yearDate: Int, $date: String, $accountID: ID!) {
+  query MonthData($yearDate: Int, $date: String, $accountID: ID!, $monthNum: Int) {
     year(yearDate: $yearDate, accountId: $accountID) {
       id
       yearDate
     }
-    month(yearDate: $yearDate, date: $date, accountId: $accountID){
+    month(yearDate: $yearDate, date: $date, accountId: $accountID, monthNum: $monthNum){
       id
       date
       income
@@ -26,26 +26,60 @@ const GET_MONTH_INFO = gql`
 
 export default function Month() {
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.toLocaleString('default', {month: 'long'});
-
-  const [yearDate, setYearDate] = useState(year);
-  const [monthDate, setMonth] = useState(month);
-
   const USER_ID = 1;
 
+  const getMonthName = (d) => {
+    return d.toLocaleString('default', {month: 'long'});
+  }
+  const date = new Date ()
+  const [yearDate, setYearDate] = useState(date.getFullYear());
+  const [monthDate, setMonthDate] = useState(getMonthName(date));
+  const [currentDate, setCurrentDate] = useState(date);
+
+  useEffect(() => {
+    const date = new Date()
+    setCurrentDate(date);
+    setYearDate(date.getFullYear());
+    setMonthDate(getMonthName(date));
+  }, [])
+
+  
   // find a way to get accountID
+  
   const variables = {
     yearDate: yearDate,
     date: monthDate,
     accountID: 1,
+    monthNum: currentDate ? currentDate.getMonth() + 1 : null,
   };
-
+  
   const { loading, error, data, refetch } = useQuery(GET_MONTH_INFO, { variables });
-
+  
   const [isOpenCategory, setIsOpenCategory] = useState(false);
   const [isOpenIncome, setIsOpenIncome] = useState(false);
+  const changeMonth = (num) => {
+    let monthNum = currentDate.getMonth() + num
+    let newYear = yearDate
+    if (monthNum === 12) {
+      monthNum = 0;
+      newYear += 1;
+    }
+    if (monthNum === -1) {
+      monthNum = 11;
+      newYear -= 1;
+    }
+    setYearDate(newYear)
+    let newDate = new Date(newYear, monthNum, 1)
+    setCurrentDate(newDate)
+    setMonthDate(getMonthName(newDate))
+  }
+
+  // useEffect(() => {
+  //   refetch()
+  //   console.log('refetch')
+  // }, [yearDate, monthDate, currentDate])
+
+  // console.log("RERENDER")
 
   if (error){ 
     console.log(error)
@@ -73,6 +107,8 @@ export default function Month() {
           closePopup={() => setIsOpenIncome(false)}
           isOpenIncome={isOpenIncome}
           refetchMonth={refetch}
+          changeMonth={changeMonth}
+          currentDate={currentDate}
         />
       </div>
       <div className="category-title">
@@ -91,6 +127,7 @@ export default function Month() {
           userId={USER_ID}
           isOpen={isOpenCategory}
           closeModal={() => setIsOpenCategory(false)}
+          currentDate={currentDate}
         />
       </div>
     </div>

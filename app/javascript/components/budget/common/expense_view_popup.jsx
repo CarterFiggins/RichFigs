@@ -19,7 +19,7 @@ const DELETE_SPENT = gql`
 
 export default function ExpenseViewPopup(props) {
 
-  const {isOpen, closeModal, spents, category, refetchMonth, monthId, userId, categoryList } = props
+  const {isOpen, closeModal, spents, category, refetchMonth, monthId, userId, categoryList, currentDate } = props
 
   const [deleteSpent] = useMutation(DELETE_SPENT);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -122,6 +122,7 @@ export default function ExpenseViewPopup(props) {
         userId={userId}
         categoryList={categoryList}
         spent={currentSpent}
+        currentDate={currentDate}
       />
     </div>
     </Modal>
