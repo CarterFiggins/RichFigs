@@ -53,10 +53,10 @@ ActiveRecord::Schema.define(version: 2020_08_31_013250) do
   end
 
   create_table "pays", force: :cascade do |t|
-    t.string "name"
     t.integer "month_id"
     t.integer "user_id"
     t.integer "repeat_id"
+    t.string "name"
     t.datetime "date"
     t.float "amount"
     t.datetime "created_at", precision: 6, null: false
@@ -68,7 +68,9 @@ ActiveRecord::Schema.define(version: 2020_08_31_013250) do
     t.datetime "updated_at", precision: 6, null: false
     t.float "amount"
     t.string "name"
-    t.datetime "date"
+    t.integer "year_date"
+    t.integer "month_date"
+    t.integer "day_date"
     t.string "transaction_type"
     t.integer "account_id"
   end

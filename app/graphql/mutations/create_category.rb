@@ -12,12 +12,14 @@ class Mutations::CreateCategory < Mutations::BaseMutation
   argument :date, Int, required: false
 
   def resolve(name:, amount:, is_fixed:, month_id:, repeated:, is_edit:, category_id:, date:)
-    # TODO: Repeat Date
 
     planned = 0
     expense = 0
     repeat_id = nil
     month = Month.find(month_id)
+    year = Year.find(month.year_id)
+
+    current_date = Time.new(year.year_date, month.month_num, date)
 
     if (is_edit)
       oldCategory = Category.find(category_id)
@@ -38,8 +40,8 @@ class Mutations::CreateCategory < Mutations::BaseMutation
         month.update(planned: amount + month.planned - oldCategory.planned)
         planned = amount
       end
-      oldCategory.update(name: name, planned: planned, expense: expense, is_fixed: is_fixed, month_id: month_id, date: date )
-      { category: oldCategory}
+      oldCategory.update(name: name, planned: planned, expense: expense, is_fixed: is_fixed, month_id: month_id, date: current_date )
+      { category: oldCategory }
     else
 
       if is_fixed
@@ -52,13 +54,21 @@ class Mutations::CreateCategory < Mutations::BaseMutation
       end
 
       if repeated
-        current_year = Year.find(month.year_id)
-        repeat = Repeat.create(account_id: current_year.account_id, name: name, amount: amount, date: date, transaction_type: is_fixed ? "expense" : "planned")
+        month_year = Year.find(month.year_id)
+        repeat = Repeat.create(
+          account_id: month_year.account_id,
+          name: name,
+          amount: amount,
+          year_date: month_year.year_date,
+          month_date: month.month_num, 
+          day_date: current_date,
+          transaction_type: is_fixed ? "expense" : "planned"
+        )
         repeat_id = repeat.id
 
-        months = Month.where(year_id: current_year.id)
+        months = Month.where(year_id: month_year.id)
         months.where("month_num > ?", month.month_num).each do |m|
-          m.update(expense: expense, planned: planned)
+          m.update(expense: expense + m.expense, planned: planned + m.planned)
           Category.create(
             name: name, 
             planned: planned, 
@@ -66,12 +76,13 @@ class Mutations::CreateCategory < Mutations::BaseMutation
             is_fixed: is_fixed, 
             month_id: m.id,
             repeat_id: repeat_id,
+            date: Time.new(month_year.year_date, m.month_num, date),
           )
         end
         years =Year.where(account_id: 1)
-        years.where("year_date > ?", current_year.year_date).each do |y|
+        years.where("year_date > ?", month_year.year_date).each do |y|
           allMonths = Month.where(year_id: y.id).each do |m|
-            m.update(expense: expense, planned: planned)
+            m.update(expense: expense + m.expense, planned: planned + m.planned)
             Category.create(
               name: name, 
               planned: planned, 
@@ -79,6 +90,7 @@ class Mutations::CreateCategory < Mutations::BaseMutation
               is_fixed: is_fixed, 
               month_id: m.id,
               repeat_id: repeat_id,
+              date: Time.new(y.year_date, m.month_num, date),
             )
           end
         end
@@ -90,7 +102,7 @@ class Mutations::CreateCategory < Mutations::BaseMutation
         expense: expense,
         is_fixed: is_fixed,
         month_id: month_id,
-        date: date,
+        date: current_date,
         repeat_id: repeat_id
       )
 

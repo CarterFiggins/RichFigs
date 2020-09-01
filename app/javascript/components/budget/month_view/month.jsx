@@ -8,12 +8,12 @@ import CategoryList from './category_list';
 import { BsPlusCircleFill } from 'react-icons/bs'
 
 const GET_MONTH_INFO = gql`
-  query MonthData($yearDate: Int, $date: String, $accountID: ID!, $monthNum: Int) {
+  query MonthData($yearDate: Int, $date: String, $accountID: ID!, $monthNum: Int, $userId: ID!) {
     year(yearDate: $yearDate, accountId: $accountID) {
       id
       yearDate
     }
-    month(yearDate: $yearDate, date: $date, accountId: $accountID, monthNum: $monthNum){
+    month(yearDate: $yearDate, date: $date, accountId: $accountID, monthNum: $monthNum, userId: $userId){
       id
       date
       income
@@ -25,7 +25,8 @@ const GET_MONTH_INFO = gql`
 `;
 
 export default function Month() {
-
+  
+  // find a way to get accountID and UserId
   const USER_ID = 1;
 
   const getMonthName = (d) => {
@@ -42,15 +43,13 @@ export default function Month() {
     setYearDate(date.getFullYear());
     setMonthDate(getMonthName(date));
   }, [])
-
-  
-  // find a way to get accountID
   
   const variables = {
     yearDate: yearDate,
     date: monthDate,
     accountID: 1,
     monthNum: currentDate ? currentDate.getMonth() + 1 : null,
+    userId: USER_ID,
   };
   
   const { loading, error, data, refetch } = useQuery(GET_MONTH_INFO, { variables });
@@ -74,12 +73,6 @@ export default function Month() {
     setMonthDate(getMonthName(newDate))
   }
 
-  // useEffect(() => {
-  //   refetch()
-  //   console.log('refetch')
-  // }, [yearDate, monthDate, currentDate])
-
-  // console.log("RERENDER")
 
   if (error){ 
     console.log(error)
