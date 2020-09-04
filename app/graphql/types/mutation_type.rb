@@ -27,7 +27,6 @@ module Types
       argument :is_fixed, Boolean, required: false
       argument :month_id, ID, required: true
       argument :repeated, Boolean, required: false
-      argument :is_edit, Boolean, required: false
       argument :category_id, ID, required: false
     end
 

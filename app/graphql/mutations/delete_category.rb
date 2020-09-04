@@ -21,6 +21,7 @@ class Mutations::DeleteCategory < Mutations::BaseMutation
         Spent.where(category_id: c.id).delete_all
         c.delete
       end
+      Repeat.update(alive: false)
       if Category.where(repeat_id: repeat_id).length == 0
         Repeat.find(repeat_id).delete
       end

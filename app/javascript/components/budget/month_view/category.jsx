@@ -49,7 +49,7 @@ export default function Category(props) {
   };
 
   const { loading, error, data, refetch } = useQuery(GET_SPENTS, { variables });
-  const [deleteCategory] = useMutation(DELETE_CATEGORY);
+  const [deleteCategory, {loading: deleteLoading}] = useMutation(DELETE_CATEGORY);
 
   if (error){ 
     console.log(error);
@@ -67,6 +67,7 @@ export default function Category(props) {
   const deleteItem = async (repeatId = null) => {
     await deleteCategory({ variables: { monthId, categoryId: category.id, repeatId } })
     refetchMonth()
+    window.location.reload();
   };
 
   return(
@@ -80,6 +81,7 @@ export default function Category(props) {
             <FiEdit />
           </div>
           <div className="icon-button-delete" onClick={() => setIsDeleteOpen(true)}>
+            {deleteLoading && <div>LOADING</div>}
             <ImBin />
           </div>
         </div>
@@ -88,15 +90,15 @@ export default function Category(props) {
         { !category.isFixed && (
           <>
             <div className="category-value">
-              Left Over: ${category.planned - category.expense}
+              Left Over: ${_.round(category.planned - category.expense, 2)}
             </div>
             <div className="category-value">
-              Planned: ${category.planned}
+              Planned: ${_.round(category.planned, 2)}
             </div>
           </>
         )}
         <div className="category-value">
-          Expense: ${category.expense}
+          Expense: ${_.round(category.expense, 2)}
         </div>
         { !category.isFixed && (
           <>
@@ -145,7 +147,6 @@ export default function Category(props) {
         monthId={monthId}
         refetchMonth={refetchMonth}
         category={category}
-        isEdit={true}
         currentDate={currentDate}
       />
     </div>

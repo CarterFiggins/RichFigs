@@ -47,9 +47,11 @@ export default function CategoryList(props) {
     return null;
   }
 
+  const sortedData = _.sortBy(data.categories, ['isFixed'])
+
   return(
     <div>
-      {_.map(data.categories, (category)=> {
+      {_.map(sortedData, (category)=> {
         category.repeatId
         return (
           <Category
@@ -69,7 +71,6 @@ export default function CategoryList(props) {
         closeModal={closeModal}
         monthId={monthId}
         refetchMonth={refetchMonth}
-        isEdit={false}
         currentDate={currentDate}
       />
     </div>

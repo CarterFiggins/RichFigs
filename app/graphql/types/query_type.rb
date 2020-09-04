@@ -37,7 +37,7 @@ module Types
       month = Month.find_by(year_id: year.id, date: date)
       if !month
         month = Month.create(date: date, month_num: month_num, year_id: year.id, income: 0, planned: 0, expense: 0)
-        Repeat.where(account_id: account_id).each do |repeat|
+        Repeat.where(account_id: account_id, alive: true).each do |repeat|
           if repeat.year_date < year.year_date || repeat.month_date <= month_num && repeat.year_date == year.year_date
             if repeat.transaction_type == "expense"
               Category.create(
@@ -54,7 +54,7 @@ module Types
                 name: repeat.name,
                 expense: 0,
                 planned: repeat.amount,
-                is_fixed: true,
+                is_fixed: false,
                 month_id: month.id,
                 repeat_id: repeat.id,
               )
