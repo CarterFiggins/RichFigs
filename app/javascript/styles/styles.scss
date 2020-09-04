@@ -1,4 +1,6 @@
 
+
+
 .large-text {
   font-size: 3rem;
 }
@@ -13,6 +15,7 @@
 .account-name {
   padding: 1rem;
   text-align: center;
+  font-size: 6rem;
 }
 
 .center {
@@ -28,15 +31,16 @@
 }
 
 .month-info-container {
-  font-size: 2rem;
-  padding: 2rem;
+  font-size: 3rem;
+  padding: 1rem;
 }
 .main-month-name{
-  font-size: 3rem;
+  font-size: 6rem;
   padding: 0 1rem;
 }
 
 .goto-month-name {
+  font-size: 2rem;
   padding: .5rem 1rem 0 1rem;
   justify-content: center;
   align-self: center;
@@ -54,7 +58,7 @@
   justify-content: center;
   display: flex;
   margin: 1rem;
-  font-size: 2rem;
+  font-size: 6rem;
 }
 
 .category-name {
@@ -62,7 +66,7 @@
   align-self: center;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 4rem;
 }
 
 .category-info {
@@ -72,7 +76,7 @@
 }
 
 .category-value {
-  font-size: 2rem;
+  font-size: 4rem;
   text-align: center;
   padding-left: 1rem;
 }
@@ -90,22 +94,23 @@
 }
 
 .category-input {
-  width: 19rem;
-  font-size: 1.5rem;
+  width: 30rem;
+  font-size: 3.5rem;
+  border: solid 0.2rem black;
 }
 
 
 .checkbox-popup-fixed {
-  padding-left: 3rem;
+  padding-left: 9.3rem;
 }
 
 .checkbox-popup-repeat {
-  padding-left: 2.2rem;
+  padding-left: 7rem;
 }
 
 .category-checkbox {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 4.8rem;
+  height: 4.8rem;
 }
 
 .category-checkbox:checked {
@@ -113,7 +118,7 @@
 }
 
 .icon-button {
-  font-size: 1.4rem;
+  font-size: 6rem;
   align-self: center;
   justify-content: center;
   cursor: pointer;
@@ -121,7 +126,7 @@
 }
 
 .icon-button-add {
-  font-size: 1.4rem;
+  font-size: 6rem;
   align-self: center;
   justify-content: center;
   cursor: pointer;
@@ -130,18 +135,19 @@
 }
 
 .icon-button-delete {
-  font-size: 1.5rem;
+  font-size: 6rem;
   align-self: center;
   cursor: pointer;
   color: red;
 }
 
 .icon-button-edit {
-  font-size: 1.6rem;
+  font-size: 5.6rem;
   align-self: center;
   padding-right: 1rem;
   cursor: pointer;
 }
+
 
 .flex {
   display: flex;
@@ -166,7 +172,7 @@
 .expenses-view-header {
   display: flex;
   text-align: center;
-  font-size: 2rem;
+  font-size: 5rem;
   padding-bottom: 2rem;
   font-weight: bold;
   justify-content: space-between;
@@ -174,7 +180,7 @@
 
 .expenses-table {
   text-align: center;
-  margin-left:auto; 
+  margin-left:auto;
   margin-right:auto;
   border: 0.1rem solid black;
   border-collapse: collapse;
@@ -185,14 +191,20 @@
     border: 0.5 solid black;
   }
   td {
-    font-size: 1.5rem;
+    font-size: 3.5rem;
     padding: 0.2rem 1rem;
     border: 0.1rem solid black;
   }
   th {
     padding: 1rem;
     border: 0.1rem solid black;
-    font-size: 2rem;
+    font-size: 3rem;
+  }
+  .icon-button-edit {
+    font-size: 3rem;
+  }
+  .icon-button-delete {
+    font-size: 3rem;
   }
 }
 
@@ -222,11 +234,11 @@
 
 .table-info {
   padding: 0.2rem 1rem;
-  
+
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 4rem;
   text-align: center;
   padding-bottom: 1rem;
 }
@@ -247,19 +259,19 @@
 }
 
 .btn-delete {
-  font-size: 1.5rem;
+  font-size: 3.5rem;
   padding: 1rem;
   border-radius: .5rem;
 }
 
 .btn-cancel {
-  font-size: 1.5rem;
+  font-size: 3.5rem;
   padding: 1rem;
   border-radius: .5rem;
 }
 
 .btn-save {
-  font-size: 2rem;
+  font-size: 7rem;
   padding: 0.2rem 1rem;
   border-color: green;
   border-radius: .5rem;
@@ -267,5 +279,11 @@
   background-color: green;
 }
 
+@media only screen and (max-width: 400px) {
 
+  .large-text {
+    // font-size: 3rem;
+    font-size: 5rem;
+  }
 
+}

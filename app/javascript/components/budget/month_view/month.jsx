@@ -20,12 +20,12 @@ const GET_MONTH_INFO = gql`
       planned
       expense
     }
-    
+
   }
 `;
 
 export default function Month() {
-  
+
   // find a way to get accountID and UserId
   const USER_ID = 1;
 
@@ -43,7 +43,7 @@ export default function Month() {
     setYearDate(date.getFullYear());
     setMonthDate(getMonthName(date));
   }, [])
-  
+
   const variables = {
     yearDate: yearDate,
     date: monthDate,
@@ -51,9 +51,9 @@ export default function Month() {
     monthNum: currentDate ? currentDate.getMonth() + 1 : null,
     userId: USER_ID,
   };
-  
+
   const { loading, error, data, refetch } = useQuery(GET_MONTH_INFO, { variables });
-  
+
   const [isOpenCategory, setIsOpenCategory] = useState(false);
   const [isOpenIncome, setIsOpenIncome] = useState(false);
   const changeMonth = (num) => {
@@ -74,7 +74,7 @@ export default function Month() {
   }
 
 
-  if (error){ 
+  if (error){
     console.log(error)
     return <div> Bad things happened </div>;
   }
@@ -87,12 +87,12 @@ export default function Month() {
       <div>
         <Menu />
       </div>
-      <div className="large-text account-name">
+      <div className="account-name">
         Fig Budget
       </div>
       <div className="large-text center">{data.year.yearDate}</div>
       <div>
-        <MonthInfo 
+        <MonthInfo
           info={data.month}
           userId={USER_ID}
           monthId={data.month.id}
@@ -106,7 +106,7 @@ export default function Month() {
       </div>
       <div className="category-title">
         <div>
-          Categories 
+          Categories
         </div>
         <div className="icon-button-add" onClick={() => setIsOpenCategory(true)}>
           <BsPlusCircleFill />
@@ -125,6 +125,6 @@ export default function Month() {
       </div>
     </div>
   );
-  
-  
+
+
 }
